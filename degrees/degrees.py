@@ -120,7 +120,7 @@ def shortest_path(source, target):
 
         # If nothing left in frontier, then no path
         if frontier.empty():
-            raise Exception("no solution")
+            return None
 
         # Choose a node from the frontier
         node = frontier.remove()
@@ -147,9 +147,6 @@ def shortest_path(source, target):
             if not frontier.contains_state(state) and state not in explored:
                 child = Node(state=state, parent=node, action=action)
                 frontier.add(child)
-
-    # TODO
-    # raise NotImplementedError
 
 
 def person_id_for_name(name):
