@@ -99,10 +99,10 @@ def shortest_path(source, target):
     # source is start, which is a number
     # target is goal, which is a number
 
-    # keep track of number of explored states
-    num_explored = 0
+    # keep track of number of paths
+    paths_explored = 0
 
-    # Initialize frontier to starting positions
+    # Initialize frontier
     # state is the person_id, parent is the last person_id, action is the movie_id
     start = Node(state=source, parent=None, action=None)
     frontier = QueueFrontier() # breadth first search
@@ -112,10 +112,9 @@ def shortest_path(source, target):
     # Initialize an empty explored set
     explored = set()
     
-    # Keep looping until solution found
     while True:
         # Print progress
-        if num_explored % 10 == 0:
+        if paths_explored % 10 == 0:
             print(".", flush=True)
 
         # If nothing left in frontier, then no path
@@ -124,7 +123,7 @@ def shortest_path(source, target):
 
         # Choose a node from the frontier
         node = frontier.remove()
-        num_explored += 1
+        paths_explored += 1
 
         # If node is the goal, then we have a solution
         if node.state == target:
@@ -136,7 +135,7 @@ def shortest_path(source, target):
                 node = node.parent
             movies.reverse()
             people.reverse()
-            print(f"Found solution after exploring {num_explored} nodes")
+            print(f"Found solution after exploring {paths_explored} paths")
             return list(zip(movies, people))
 
         # Mark node as explored
