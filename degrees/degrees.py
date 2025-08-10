@@ -92,8 +92,64 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
+    # return a list of (movie_id, person_id) pairs, Each pair should be a tuple of two strings
+    # Each tuple should be in the format (movie_id, person_id)
+    # You may call the neighbors_for_person function, which accepts a person’s id as input, and returns a set of (movie_id, person_id) pairs for all people who starred in a movie with a given person.
+
+    # source is start, which is a number
+    # target is goal, which is a number
+
+    # keep track of number of explored states
+    num_explored = 0
+
+    # Initialize frontier to starting positions
+    # state is the person_id, parent is the last person_id, action is the movie_id
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier() # breadth first search
+    # frontier = StackFrontier() # depth first search
+    frontier.add(start)
+    
+    # Initialize an empty explored set
+    explored = set()
+    
+    # Keep looping until solution found
+    while True:
+        # Print progress
+        if num_explored % 10 == 0:
+            print(".", flush=True)
+
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            raise Exception("no solution")
+
+        # Choose a node from the frontier
+        node = frontier.remove()
+        num_explored += 1
+
+        # If node is the goal, then we have a solution
+        if node.state == target:
+            movies = []
+            people = []
+            while node.parent is not None:
+                movies.append(node.action)
+                people.append(node.state)
+                node = node.parent
+            movies.reverse()
+            people.reverse()
+            print(f"Found solution after exploring {num_explored} nodes")
+            return list(zip(movies, people))
+
+        # Mark node as explored
+        explored.add(node.state)
+
+        # Add neighbors to frontier
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+                frontier.add(child)
+
     # TODO
-    raise NotImplementedError
+    # raise NotImplementedError
 
 
 def person_id_for_name(name):
